@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
 set(CMAKE_CXX_STANDARD 14)
 
-project(gtest-demo CXX)
+project(jc CXX)
 
 # place binaries and libraries according to GNU standards
 include(GNUInstallDirs)
