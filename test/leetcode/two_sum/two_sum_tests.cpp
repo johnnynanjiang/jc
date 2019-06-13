@@ -38,3 +38,24 @@ TEST(leetcode, two_sum) {
     ASSERT_EQ(node->val, 4);
     ASSERT_EQ(node->next, nullptr);
 }
+
+TEST(leetcode, two_sum_single_element) {
+    // 5
+    ListNode node_a_1{5};
+
+    // 5
+    ListNode node_b_1{5};
+
+    /*
+     expected result should be:
+     5 + 5 = 10
+     0 -> 1
+    */
+    ListNode *node = two_sum(&node_a_1, &node_b_1);
+
+    ASSERT_EQ(node->val, 0);
+    ASSERT_NE(node->next, nullptr);
+    node = node->next;
+    ASSERT_EQ(node->val, 1);
+    ASSERT_EQ(node->next, nullptr);
+}

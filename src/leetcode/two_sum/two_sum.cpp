@@ -40,7 +40,7 @@ ListNode * two_sum(ListNode * l1, ListNode * l2) {
         int sum = value1 + value2;
         int mod = sum % 10;
 
-        ListNode * new_node = (ListNode *)malloc(sizeof(struct ListNode));
+        ListNode * new_node = new ListNode(0);
         new_node->val = mod + left_over;
         new_node->next = nullptr;
 
@@ -57,8 +57,6 @@ ListNode * two_sum(ListNode * l1, ListNode * l2) {
 
         node1 = node1 == nullptr ? nullptr : node1->next;
         node2 = node2 == nullptr ? nullptr : node2->next;
-
-        print_nodes(result_head_node);
     }
 
     if (left_over > 0) {
@@ -68,6 +66,8 @@ ListNode * two_sum(ListNode * l1, ListNode * l2) {
 
         result_current_node->next = new_node;
     }
+
+    print_nodes(result_head_node);
 
     return result_head_node;
 }
