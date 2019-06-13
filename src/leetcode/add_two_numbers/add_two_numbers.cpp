@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <cstdio>
 
-#include "two_sum.h"
+#include "add_two_numbers.h"
 
 
 void print_nodes(ListNode * node_head_ptr) {
@@ -22,7 +22,7 @@ void print_nodes(ListNode * node_head_ptr) {
     printf("\n");
 }
 
-ListNode * two_sum(ListNode * l1, ListNode * l2) {
+ListNode * add_two_numbers(ListNode *l1, ListNode *l2) {
     ListNode * node1 = l1;
     ListNode * node2 = l2;
 

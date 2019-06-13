@@ -20,7 +20,7 @@ add_test(
 ### >>> Leetcode tests
 add_executable(
     leetcode_tests
-        leetcode/two_sum/two_sum_tests.cpp
+        leetcode/add_two_numbers/add_two_numbers_tests.cpp
     )
 
 target_link_libraries(

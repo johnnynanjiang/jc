@@ -3,11 +3,11 @@
 //
 
 #include "gtest/gtest.h"
-#include "leetcode/two_sum/two_sum.h"
+#include "leetcode/add_two_numbers/add_two_numbers.h"
 
 // https://leetcode.com/problems/add-two-numbers/
 
-TEST(leetcode, two_sum) {
+TEST(leetcode, add_two_numbers) {
     // 3 -> 2 -> 1 = 123
     ListNode node_a_3{1, nullptr};
     ListNode node_a_2{2, &node_a_3};
@@ -24,7 +24,7 @@ TEST(leetcode, two_sum) {
      123 + 4567 = 4690
      0 -> 9 -> 6 -> 4
     */
-    ListNode *node = two_sum(&node_a_1, &node_b_1);
+    ListNode *node = add_two_numbers(&node_a_1, &node_b_1);
 
     ASSERT_EQ(node->val, 0);
     ASSERT_NE(node->next, nullptr);
@@ -39,7 +39,7 @@ TEST(leetcode, two_sum) {
     ASSERT_EQ(node->next, nullptr);
 }
 
-TEST(leetcode, two_sum_single_element) {
+TEST(leetcode, add_two_numbers_single_element) {
     // 5
     ListNode node_a_1{5};
 
@@ -51,7 +51,7 @@ TEST(leetcode, two_sum_single_element) {
      5 + 5 = 10
      0 -> 1
     */
-    ListNode *node = two_sum(&node_a_1, &node_b_1);
+    ListNode *node = add_two_numbers(&node_a_1, &node_b_1);
 
     ASSERT_EQ(node->val, 0);
     ASSERT_NE(node->next, nullptr);

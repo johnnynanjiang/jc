@@ -21,9 +21,9 @@ add_library(leetcode "")
 target_sources(
     leetcode
     PRIVATE
-        leetcode/two_sum/two_sum.cpp
+        leetcode/add_two_numbers/add_two_numbers.cpp
     PUBLIC
-        ${CMAKE_CURRENT_LIST_DIR}/leetcode/two_sum/two_sum.h
+        ${CMAKE_CURRENT_LIST_DIR}/leetcode/add_two_numbers/add_two_numbers.h
     )
 
 target_include_directories(
