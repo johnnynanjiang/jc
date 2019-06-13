@@ -5,12 +5,12 @@
 #ifndef JC_TWO_SUM_H
 #define JC_TWO_SUM_H
 
-struct Node {
-    int value;
-    Node * next;
-    Node(int v, Node * n) : value(v), next(n) {}
+struct ListNode {
+    int val;
+    ListNode * next;
+    ListNode(int v = 0, ListNode * n = nullptr) : val(v), next(n) {}
 };
 
-int two_sum(Node * node1, Node * node2);
+ListNode * two_sum(ListNode * l1, ListNode * l2);
 
 #endif //JC_TWO_SUM_H

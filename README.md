@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/badge/license-%20BSD--3-blue.svg)](../master/LICENSE)
 
 
-# gtest-demo
+# jc
 
 C/C++ unit test demo using [Google Test](https://code.google.com/p/googletest) deployed to
 [Travis-CI](https://travis-ci.org/bast/gtest-demo/builds) with test coverage
@@ -73,3 +73,4 @@ $ ./bin/unit_tests
 ## References
 
 - https://crascit.com/2015/07/25/cmake-gtest/
+- [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html#General_Naming_Rules)
