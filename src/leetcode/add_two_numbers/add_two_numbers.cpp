@@ -2,24 +2,23 @@
 // Created by Nan Jiang on 2019-06-12.
 //
 
-#include <cstdlib>
-#include <cstdio>
+#include <iostream>
 
 #include "add_two_numbers.h"
 
+using namespace std;
 
-void print_nodes(ListNode * node_head_ptr) {
-    ListNode * current_node = node_head_ptr;
+ostream & operator<<(ostream & os, ListNode * node) {
+    ListNode * current_node = node;
 
-    while (true) {
-        if (current_node == nullptr) break;
-
-        printf("%d, ", current_node->val);
-
+    while (current_node != nullptr) {
+        os << current_node->val << ", ";
         current_node = current_node->next;
     }
 
-    printf("\n");
+    os << endl;
+
+    return os;
 }
 
 ListNode * add_two_numbers(ListNode *l1, ListNode *l2) {
@@ -31,9 +30,7 @@ ListNode * add_two_numbers(ListNode *l1, ListNode *l2) {
 
     int left_over = 0;
 
-    while (true) {
-        if (node1 == nullptr && node2 == nullptr) break;
-
+    while (node1 != nullptr || node2 != nullptr) {
         int value1 = node1 != nullptr ? node1->val : 0;
         int value2 = node2 != nullptr ? node2->val : 0;
 
@@ -67,7 +64,7 @@ ListNode * add_two_numbers(ListNode *l1, ListNode *l2) {
         result_current_node->next = new_node;
     }
 
-    print_nodes(result_head_node);
+    cout << l1 << "+" << endl << l2 << "=" << endl << result_head_node << endl;
 
     return result_head_node;
 }
