@@ -40,7 +40,8 @@ add_test(
 ### >>> Practice tests
 add_executable(
         practice_tests
-        practice/practice.cpp
+        practice/string.cpp
+        practice/class.cpp
 )
 
 target_link_libraries(
