@@ -36,3 +36,22 @@ add_test(
       ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/leetcode_tests
     )
 ### <<< Leetcode tests
+
+### >>> Practice tests
+add_executable(
+        practice_tests
+        practice/practice.cpp
+)
+
+target_link_libraries(
+        practice_tests
+        gtest_main
+)
+
+add_test(
+        NAME
+        practice_tests
+        COMMAND
+        ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/practice_tests
+)
+### <<< Practice tests
