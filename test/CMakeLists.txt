@@ -41,7 +41,8 @@ add_test(
 add_executable(
         practice_tests
         practice/string.cpp
-        practice/class.cpp
+        practice/interview_questions.cpp
+        practice/book.cpp
 )
 
 target_link_libraries(
