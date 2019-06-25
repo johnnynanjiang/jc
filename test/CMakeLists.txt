@@ -21,6 +21,7 @@ add_test(
 add_executable(
     leetcode_tests
         leetcode/add_two_numbers/add_two_numbers_tests.cpp
+        leetcode/longest_substring_without_repeat/longest_substring_without_repeat_tests.cpp
     )
 
 target_link_libraries(
