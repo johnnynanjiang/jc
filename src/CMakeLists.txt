@@ -4,7 +4,6 @@ target_sources(
     example
     PRIVATE
         example.cpp
-        main.cpp
     PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/example.h
     )
@@ -15,7 +14,7 @@ target_include_directories(
         ${CMAKE_CURRENT_LIST_DIR}
     )
 
-### >>> Leetcode tests
+### >>> leetcode
 add_library(leetcode "")
 
 target_sources(
@@ -31,4 +30,22 @@ target_include_directories(
     PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}
     )
-### <<< Leetcode tests
+### <<< leetcode
+
+### >>> util
+add_library(util "")
+
+target_sources(
+    util
+    PRIVATE
+        util/Utils.cpp
+    PUBLIC
+        ${CMAKE_CURRENT_LIST_DIR}/util/Utils.h
+)
+
+target_include_directories(
+    util
+    PUBLIC
+        ${CMAKE_CURRENT_LIST_DIR}
+)
+### <<< util

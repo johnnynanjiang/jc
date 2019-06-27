@@ -1,7 +1,10 @@
-#include <iostream>
-#include <vector>
-#include <array>
+//
+// Created by Nan Jiang on 2019-06-27.
+//
 
+#include "gtest/gtest.h"
+
+// TODO: only works for vector<int>, need to make it generic
 template <typename T>
 std::string vectorToString(const std::vector<T> &v) {
     std::string str = "{";
@@ -19,13 +22,7 @@ std::string vectorToString(const std::vector<T> &v) {
     return str + "}";
 }
 
-int main (int argc, char *argv[]) {
-    std::vector<int> v = {0, 1, 2, 3};
-    int arr[] = {4, 5, 6};
-    v.push_back(*arr);
-
-    std::cout << "Hello world!" << std::endl;
-    std::cout << "vector v: " << vectorToString(v) << std::endl;
-
-    return 0;
+TEST(Utils, vector_to_string) {
+    std::vector<int> v{1, 2, 3, 4, 5};
+    ASSERT_EQ("{1, 2, 3, 4, 5}", vectorToString<int>(v));
 }
