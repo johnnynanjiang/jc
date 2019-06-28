@@ -119,3 +119,53 @@ TEST(algorithm, two_array_production) {
 
     ASSERT_EQ("[720, 360, 240, 180, 144, 120]", convertArrayToString(b, size));
 }
+
+
+void foo(int a, int b) {
+    cout << "foo(int a, int b)" << endl;
+}
+
+template<class T>
+void foo(T a, T b) = delete;
+
+/* Or explicitly delete long type
+void foo(long a, long b) = delete;
+{
+    cout << "foo(long a, long b)" << endl;
+}
+*/
+
+TEST(interview_questions, functions_delete) {
+    foo(1, 2);
+    //foo(1l, 2l);
+}
+
+class C {
+public:
+    C() { cout << "C::C()" << endl;}
+    virtual ~C() { cout << "C::~C()" << endl;}
+};
+
+class CC: public C {
+public:
+    CC():C() { cout << "CC::CC()" << endl;}
+    ~CC() { cout << "CC::~CC()" << endl;}
+};
+
+/*
+ * C++11 §5.3.5/3
+ * if ~C() is not virtual, the behaviour of destructor is undefined, e.g.
+    C::C()
+    CC::CC()
+    C::~C()
+
+    the correct behaviour should be:
+    C::C()
+    CC::CC()
+    CC::~CC()
+    C::~C()
+ */
+TEST(interview_questions, virtual_destructor) {
+    C * c = new CC();
+    delete c;
+}
