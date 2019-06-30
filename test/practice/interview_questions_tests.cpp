@@ -5,17 +5,19 @@
 #include "gtest/gtest.h"
 
 #include <string>
+#include <map>
 
 using namespace std;
 
 template<class P, class C>
-bool isInheritance(P * parent, C * child) {
+bool isInheritance(P *parent, C *child) {
     return dynamic_cast<P *>(child) != NULL;
 }
 
 class A {
 public:
     virtual std::string getName();
+
 private:
     std::string name = "name of A";
 };
@@ -24,9 +26,10 @@ std::string A::getName() {
     return this->name;
 }
 
-class AA: public A {
+class AA : public A {
 public:
     virtual std::string getName() override;
+
 private:
     std::string name = "name of AA";
 };
@@ -38,6 +41,7 @@ std::string AA::getName() {
 class B {
 public:
     virtual std::string getName();
+
 private:
     std::string name = "name of B";
 };
@@ -53,9 +57,9 @@ bool isBaseOf() {
 
 // source @ https://www.toptal.com/c-plus-plus/interview-questions
 TEST(template_function_and_class_inheritance, is_base_of) {
-    A * a = new A();
-    AA *  aa = new AA();
-    B * b = new B();
+    A *a = new A();
+    AA *aa = new AA();
+    B *b = new B();
 
     std::cout << a->getName() << std::endl;
     std::cout << aa->getName() << std::endl;
@@ -89,23 +93,23 @@ TEST(template_function_and_class_inheritance, is_same_class) {
 void produceBFromA(int a[], int b[], size_t size) {
     long total = 1;
 
-    for(int i=0; i<size; ++i) {
+    for (int i = 0; i < size; ++i) {
         total *= a[i];
     }
 
-    for(int i=0; i<size; ++i) {
-        b[i] = total/a[i];
+    for (int i = 0; i < size; ++i) {
+        b[i] = total / a[i];
     }
 }
 
 std::string convertArrayToString(int arr[], size_t size) {
     std::string str = "[";
 
-    for(int i=0; i<size-1; ++i) {
+    for (int i = 0; i < size - 1; ++i) {
         str += std::to_string(arr[i]) + ", ";
     }
 
-    str += std::to_string(arr[size-1]) + "]";
+    str += std::to_string(arr[size - 1]) + "]";
 
     return str;
 }
@@ -113,7 +117,7 @@ std::string convertArrayToString(int arr[], size_t size) {
 TEST(algorithm, two_array_production) {
     int a[] = {1, 2, 3, 4, 5, 6};
     int b[6] = {0};
-    size_t size = sizeof(b)/sizeof(*b);
+    size_t size = sizeof(b) / sizeof(*b);
 
     produceBFromA(a, b, size);
 
@@ -142,14 +146,16 @@ TEST(interview_questions, functions_delete) {
 
 class C {
 public:
-    C() { cout << "C::C()" << endl;}
-    virtual ~C() { cout << "C::~C()" << endl;}
+    C() { cout << "C::C()" << endl; }
+
+    virtual ~C() { cout << "C::~C()" << endl; }
 };
 
-class CC: public C {
+class CC : public C {
 public:
-    CC():C() { cout << "CC::CC()" << endl;}
-    ~CC() { cout << "CC::~CC()" << endl;}
+    CC() : C() { cout << "CC::CC()" << endl; }
+
+    ~CC() { cout << "CC::~CC()" << endl; }
 };
 
 /*
@@ -166,6 +172,77 @@ public:
     C::~C()
  */
 TEST(interview_questions, virtual_destructor) {
-    C * c = new CC();
+    C *c = new CC();
     delete c;
+}
+
+
+// https://www.sczyh30.com/posts/C-C/cpp-stl-hashmap/
+
+class Person {
+public:
+    explicit Person() {}
+
+    explicit Person(string name, string address = "address") : name(name), address(address) {}
+
+    bool operator==(const Person &person) {
+        return this->name == person.name && this->address == person.address;
+    }
+
+    friend std::ostream &operator<<(std::ostream &os, const Person &person) {
+        return os << "Person(name = " + person.name + ", address = " + person.address << ")" << endl;
+    }
+
+private:
+    string name;
+    string address;
+};
+
+TEST(interview_questions, class_operators) {
+    Person p1("name", "address"), p2("name", "address"), p3("name3");
+
+    cout << p1;
+    cout << p2;
+    cout << p3;
+
+    ASSERT_TRUE(p1 == p2);
+    ASSERT_FALSE(p1 == p3);
+}
+
+// the question https://leetcode.com/discuss/interview-experience/322703/google-swe-mountain-view-reject
+// good explanation on hashmap in C++ https://blog.csdn.net/u010025211/article/details/46653519
+
+template<typename T>
+void mapToString(const std::map<T, T> &m) {
+    if (!m.empty()) {
+        for (auto& it: m) {
+            cout << it.first << "," << it.second << endl;
+        }
+    }
+    cout << endl;
+}
+
+TEST(interview_questions, find_elements_in_a_but_not_in_b) {
+    int a[] = {1, 2, 2, 3, 4, 5};
+    int b[] = {1, 2, 5};
+    // expected result is {2, 3, 4}
+    std::map<int, int> map;
+
+    for (int i = 0; i < sizeof(a) / sizeof(int); ++i) {
+        if (map.find(a[i]) != map.end()) {
+            map[a[i]]++;
+        } else {
+            map[a[i]] = 1;
+        }
+    }
+
+    mapToString<int>(map);
+
+    for (int i = 0; i < sizeof(b) / sizeof(int); ++i) {
+        if (map.find(b[i]) != map.end()) {
+            map[b[i]]--;
+        }
+    }
+
+    mapToString<int>(map);
 }
