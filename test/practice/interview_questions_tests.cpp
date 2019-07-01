@@ -7,6 +7,8 @@
 #include <string>
 #include <map>
 
+#include "interview_questions_tests.h"
+
 using namespace std;
 
 template<class P, class C>
@@ -264,20 +266,20 @@ int remove_duplicates_from_sorted_array(int array[], size_t size) {
     return i + 1;
 }
 
-template<typename T>
-std::string vectorToString(const std::vector<T> &v) {
-    std::string str = "{";
+int removeDuplicates(vector<int>& nums) {
+    int i = 0;
+    int j = i;
+    int size = nums.size();
 
-    if (!v.empty()) {
-        auto it = v.begin();
+    if (size == 0 || size == 1) return size;
 
-        for (; it < v.end() - 1; it++) {
-            str += std::to_string(*it) + ", ";
+    while (++j < size) {
+        if (nums[i] != nums[j]) {
+            nums[++i] = nums[j];
         }
-        str += std::to_string(*it);
     }
 
-    return str + "}";
+    return i + 1;
 }
 
 TEST(interview_questions, remove_duplicates_from_sorted_array) {
@@ -290,4 +292,16 @@ TEST(interview_questions, remove_duplicates_from_sorted_array) {
     EXPECT_EQ(5, remove_duplicates_from_sorted_array(array2, 8));
     std::vector<int> v2(array2, array2 + sizeof(array2) / sizeof(int));
     ASSERT_EQ("{0, 1, 2, 3, 4, 3, 3, 4}", vectorToString<int>(v2));
+}
+
+TEST(interview_questions, removeDuplicates) {
+    vector<int> v;
+
+    v = {0, 0, 1, 2, 2};
+    EXPECT_EQ(3, removeDuplicates(v));
+    ASSERT_EQ("{0, 1, 2, 2, 2}", vectorToString<int>(v));
+
+    v = {0, 1, 2, 2, 3, 3, 3, 4};
+    EXPECT_EQ(5, removeDuplicates(v));
+    ASSERT_EQ("{0, 1, 2, 3, 4, 3, 3, 4}", vectorToString<int>(v));
 }
