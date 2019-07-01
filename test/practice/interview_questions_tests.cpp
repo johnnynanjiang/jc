@@ -214,16 +214,6 @@ TEST(interview_questions, class_operators) {
 // the question https://leetcode.com/discuss/interview-experience/322703/google-swe-mountain-view-reject
 // good explanation on hashmap in C++ https://blog.csdn.net/u010025211/article/details/46653519
 
-template<typename T>
-void mapToString(const std::map<T, T> &m) {
-    if (!m.empty()) {
-        for (auto &it: m) {
-            cout << it.first << "," << it.second << endl;
-        }
-    }
-    cout << endl;
-}
-
 TEST(interview_questions, find_elements_in_a_but_not_in_b) {
     int a[] = {1, 2, 2, 3, 4, 5};
     int b[] = {1, 2, 5};
@@ -266,7 +256,7 @@ int remove_duplicates_from_sorted_array(int array[], size_t size) {
     return i + 1;
 }
 
-int removeDuplicates(vector<int>& nums) {
+int removeDuplicates(vector<int> &nums) {
     int i = 0;
     int j = i;
     int size = nums.size();
@@ -304,4 +294,37 @@ TEST(interview_questions, removeDuplicates) {
     v = {0, 1, 2, 2, 3, 3, 3, 4};
     EXPECT_EQ(5, removeDuplicates(v));
     ASSERT_EQ("{0, 1, 2, 3, 4, 3, 3, 4}", vectorToString<int>(v));
+}
+
+/*
+ Best Time to Buy and Sell Stock II
+ https://leetcode.com/explore/interview/card/top-interview-questions-easy/92/array/564/
+ */
+
+int maxProfit(vector<int> &prices) {
+    size_t size = prices.size();
+    int profit = 0;
+
+    if (size == 0 || size == 1) return profit;
+
+    size_t i = 0;
+    while (i < size - 1) {
+        if (prices[i + 1] > prices[i]) {
+            profit += prices[i + 1] - prices[i];
+        }
+
+        ++i;
+    }
+
+    return profit;
+}
+
+TEST(interview_questions, maxProfit) {
+    vector<int> v;
+
+    v = {1, 2, 4, 3, 9, 1};
+    EXPECT_EQ(9, maxProfit(v));
+
+    v = {1, 2, 3, 3, 9, 1};
+    EXPECT_EQ(8, maxProfit(v));
 }

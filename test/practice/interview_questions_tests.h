@@ -6,6 +6,16 @@
 
 using namespace std;
 
+template<typename T>
+void mapToString(const std::map<T, T> &m) {
+    if (!m.empty()) {
+        for (auto &it: m) {
+            cout << it.first << "," << it.second << endl;
+        }
+    }
+    cout << endl;
+}
+
 template <typename T>
 std::string vectorToString(const std::vector<T> &v) {
     std::string str = "{";
