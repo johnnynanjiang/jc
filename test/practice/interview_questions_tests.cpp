@@ -215,7 +215,7 @@ TEST(interview_questions, class_operators) {
 template<typename T>
 void mapToString(const std::map<T, T> &m) {
     if (!m.empty()) {
-        for (auto& it: m) {
+        for (auto &it: m) {
             cout << it.first << "," << it.second << endl;
         }
     }
@@ -245,4 +245,52 @@ TEST(interview_questions, find_elements_in_a_but_not_in_b) {
     }
 
     mapToString<int>(map);
+}
+
+// https://leetcode.com/explore/interview/card/top-interview-questions-easy/92/array/727/
+
+int remove_duplicates_from_sorted_array(int array[], size_t size) {
+    int i = 0;
+    int j = i + 1;
+
+    if (size == 0 || size == 1) return size;
+
+    while (i < size ) {
+        if (i == size - 1) return i;
+
+        if (array[i] == array[j]) {
+            if (j + 1 >= size) {
+                return j;
+            } else {
+                ++j;
+            }
+        } else {
+            array[i + 1] = array[j];
+            ++i;
+            j = i + 1;
+        }
+    }
+}
+
+template<typename T>
+std::string vectorToString(const std::vector<T> &v) {
+    std::string str = "{";
+
+    if (!v.empty()) {
+        auto it = v.begin();
+
+        for (; it < v.end() - 1; it++) {
+            str += std::to_string(*it) + ", ";
+        }
+        str += std::to_string(*it);
+    }
+
+    return str + "}";
+}
+
+TEST(interview_questions, remove_duplicates_from_sorted_array) {
+    int array[] = {0, 0, 1, 2, 2};
+    EXPECT_EQ(3, remove_duplicates_from_sorted_array(array, 5));
+    std::vector<int> v(array, array + sizeof(array) / sizeof(int));
+    ASSERT_EQ("{0, 1, 2}", vectorToString<int>(v));
 }
