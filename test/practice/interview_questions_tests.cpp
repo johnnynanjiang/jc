@@ -251,25 +251,17 @@ TEST(interview_questions, find_elements_in_a_but_not_in_b) {
 
 int remove_duplicates_from_sorted_array(int array[], size_t size) {
     int i = 0;
-    int j = i + 1;
+    int j = i;
 
     if (size == 0 || size == 1) return size;
 
-    while (i < size ) {
-        if (i == size - 1) return i;
-
-        if (array[i] == array[j]) {
-            if (j + 1 >= size) {
-                return j;
-            } else {
-                ++j;
-            }
-        } else {
-            array[i + 1] = array[j];
-            ++i;
-            j = i + 1;
+    while (++j < size) {
+        if (array[i] != array[j]) {
+            array[++i] = array[j];
         }
     }
+
+    return i + 1;
 }
 
 template<typename T>
@@ -292,5 +284,10 @@ TEST(interview_questions, remove_duplicates_from_sorted_array) {
     int array[] = {0, 0, 1, 2, 2};
     EXPECT_EQ(3, remove_duplicates_from_sorted_array(array, 5));
     std::vector<int> v(array, array + sizeof(array) / sizeof(int));
-    ASSERT_EQ("{0, 1, 2}", vectorToString<int>(v));
+    ASSERT_EQ("{0, 1, 2, 2, 2}", vectorToString<int>(v));
+
+    int array2[] = {0, 1, 2, 2, 3, 3, 3, 4};
+    EXPECT_EQ(5, remove_duplicates_from_sorted_array(array2, 8));
+    std::vector<int> v2(array2, array2 + sizeof(array2) / sizeof(int));
+    ASSERT_EQ("{0, 1, 2, 3, 4, 3, 3, 4}", vectorToString<int>(v2));
 }
