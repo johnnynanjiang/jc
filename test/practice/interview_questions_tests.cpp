@@ -335,18 +335,16 @@ TEST(interview_questions, maxProfit) {
  */
 
 void rotate(vector<int> &nums, int k) {
-    size_t size = nums.size();
-    size_t steps = k % size;
+    size_t steps = k % nums.size();
 
     if (steps == 0) return;
 
-    for (size_t j = 0; j < steps; ++j) {
-        int tmp = nums[size - 1];
-        for (size_t i = size - 1; i > 0; --i) {
-            nums[i] = nums[i - 1];
-        }
-        nums[0] = tmp;
-    }
+    vector<int> tmp{};
+    vector<int>::iterator cutPoint = nums.end() - steps;
+    tmp.insert(tmp.begin(), cutPoint, nums.end());
+    tmp.insert(tmp.end(), nums.begin(), cutPoint);
+
+    std::swap(nums, tmp);
 }
 
 TEST(interview_questions, rotateArray) {
@@ -363,4 +361,9 @@ TEST(interview_questions, rotateArray) {
     k = 2;
     rotate(v, k);
     ASSERT_EQ("{3, 99, -1, -100}", vectorToString(v));
+
+    v = {1, 2};
+    k = 3;
+    rotate(v, k);
+    ASSERT_EQ("{2, 1}", vectorToString(v));
 }
