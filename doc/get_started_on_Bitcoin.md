@@ -2,6 +2,12 @@
 * Add a test to jc
 * Add a test for ECDSA
 
+Suitable good first issue
+- https://github.com/bitcoin/bitcoin/issues/16306
+
+C++ Concurrency in Action
+https://legacy.gitbook.com/book/chenxiaowei/cpp_concurrency_in_action/details
+
 ## Source Code
 
 * Understand the code
@@ -10,6 +16,7 @@
 - https://github.com/CodeReaderMe/awesome-code-reading/issues/2
 - https://dev.visucore.com/bitcoin/doxygen/inherits.html
 - https://en.bitcoin.it/wiki/Bitcoin_Core_0.11_(ch_4):_P2P_Network
+- https://blog.csdn.net/pure_lady/article/details/77623301 比特币源码分析 ****
 
 * Make
 http://nuclear.mutantstargoat.com/articles/make/

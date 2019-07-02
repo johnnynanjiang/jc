@@ -328,3 +328,39 @@ TEST(interview_questions, maxProfit) {
     v = {1, 2, 3, 3, 9, 1};
     EXPECT_EQ(8, maxProfit(v));
 }
+
+/*
+ Rotate Array
+ https://leetcode.com/explore/interview/card/top-interview-questions-easy/92/array/646/
+ */
+
+void rotate(vector<int> &nums, int k) {
+    size_t size = nums.size();
+    size_t steps = k % size;
+
+    if (steps == 0) return;
+
+    for (size_t j = 0; j < steps; ++j) {
+        int tmp = nums[size - 1];
+        for (size_t i = size - 1; i > 0; --i) {
+            nums[i] = nums[i - 1];
+        }
+        nums[0] = tmp;
+    }
+}
+
+TEST(interview_questions, rotateArray) {
+    vector<int> v;
+    int k;
+
+    v = {1, 2, 3, 4, 5, 6, 7};
+    k = 3;
+
+    rotate(v, k);
+    ASSERT_EQ("{5, 6, 7, 1, 2, 3, 4}", vectorToString(v));
+
+    v = {-1, -100, 3, 99};
+    k = 2;
+    rotate(v, k);
+    ASSERT_EQ("{3, 99, -1, -100}", vectorToString(v));
+}
