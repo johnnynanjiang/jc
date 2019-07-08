@@ -131,3 +131,25 @@ TEST(data_structure_algorithm_application_cpp, new_2d_array) {
     print2DArray<int>(array, rowSize, columnSize);
     delete2DArray<int>(array, rowSize);
 }
+
+// recursive functions
+
+uint32_t fibonacci(uint32_t num) {
+    if (num == 0) return 0;
+    if (num == 1) return 0;
+    if (num == 2) return 1;
+
+    return fibonacci(num - 2) + fibonacci(num - 1);
+}
+
+TEST(data_structure_algorithm_application_cpp, recursive) {
+    ASSERT_EQ(0, fibonacci(0));
+    ASSERT_EQ(0, fibonacci(1));
+    ASSERT_EQ(1, fibonacci(2));
+    ASSERT_EQ(1, fibonacci(3));
+    ASSERT_EQ(2, fibonacci(4));
+    ASSERT_EQ(3, fibonacci(5));
+    ASSERT_EQ(5, fibonacci(6));
+    ASSERT_EQ(8, fibonacci(7));
+    ASSERT_EQ(13, fibonacci(8));
+}
