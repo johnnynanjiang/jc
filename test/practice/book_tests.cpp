@@ -79,14 +79,64 @@ TEST(cpp_primer_5th, io_cin) {
 
 // C++ Concurrency In Action
 
-void doSomething() {
+void do_something() {
     sleep(10);
-    cout << "do something" << endl;
+    cout << "do something 1" << endl;
 }
 
+class background_task {
+public:
+    void operator ()() {
+        cout << "do something 2" << endl;
+    }
+};
+
 TEST(cpp_cocurrency_in_action, thread) {
-    std::thread t(doSomething);
+    std::thread t(do_something);
+    background_task do_something_2;
+    std::thread t2(do_something_2);
+    std::thread t3{background_task()};
+    std::thread t4([]{do_something();});
+
     t.join();
+    t2.join();
+    t3.join();
+    t4.detach();
+}
+
+struct func {
+    int& m_number;
+
+    func(int& number) : m_number{number} {} // passing in & here could cause issues
+
+    void operator()() {
+        int i = 0;
+        while (++i <= m_number) {
+            cout << i << endl;
+        }
+    }
+};
+
+TEST(cpp_cocurrency_in_action, thread_access_destroyed_instance) {
+    int local_number = 10000;
+    func thread_func(local_number);
+    std::thread t{thread_func};
+    t.detach();
+
+    cout << "Test thread_access_destroyed_instance finished" << endl;
+    ASSERT_FALSE(t.joinable());
+}
+
+void f(int i, string const & s, string ss) {
+    cout << i << ", " << s << ", " << ss << endl;
+}
+
+TEST(cpp_cocurrency_in_action, pass_parameters) {
+    thread t(f, 1, "a", "A");
+    thread t2(f, 2, "b", "B");
+
+    t.join();
+    t2.join();
 }
 
 // 数据结构、算法与应用 C++语言描述
