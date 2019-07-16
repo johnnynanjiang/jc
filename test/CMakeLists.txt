@@ -24,6 +24,7 @@ add_executable(
         leetcode/longest_substring_without_repeat/longest_substring_without_repeat_tests.cpp
         leetcode/median_of_two_sorted_arrays/solution_tests.cpp
         leetcode/search/search_tests.cpp
+        leetcode/search/binary_search_tree_tests.cpp
 )
 
 target_link_libraries(
