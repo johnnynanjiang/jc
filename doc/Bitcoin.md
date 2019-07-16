@@ -1,6 +1,4 @@
 ## To Do
-* Add a test to jc
-* Add a test for ECDSA
 
 Suitable good first issue
 - https://github.com/bitcoin/bitcoin/issues/16306
@@ -11,12 +9,14 @@ https://legacy.gitbook.com/book/chenxiaowei/cpp_concurrency_in_action/details
 ## Source Code
 
 * Understand the code
+- [PRs - P2P related] (https://github.com/bitcoin/bitcoin/pulls?page=21&q=is%3Apr+is%3Aclosed+p2p&utf8=%E2%9C%93)
 - The entry point of bitcoind is here: https://github.com/bitcoin/bitcoin/blob/master/src/bitcoind.cpp#L188
 - https://bitcointalk.org/index.php?topic=41718.0 ****
 - https://github.com/CodeReaderMe/awesome-code-reading/issues/2
 - https://dev.visucore.com/bitcoin/doxygen/inherits.html
 - https://en.bitcoin.it/wiki/Bitcoin_Core_0.11_(ch_4):_P2P_Network
 - https://blog.csdn.net/pure_lady/article/details/77623301 比特币源码分析 ****
+- ***** [Who controls Bitcoin Core?](https://medium.com/@lopp/who-controls-bitcoin-core-c55c0af91b8a)
 
 * Make
 http://nuclear.mutantstargoat.com/articles/make/
