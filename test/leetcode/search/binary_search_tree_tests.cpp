@@ -5,6 +5,7 @@
 #include "gtest/gtest.h"
 
 #include <string>
+#include <list>
 
 using namespace std;
 
@@ -21,7 +22,7 @@ struct ListNode {
     ListNode(int x) : val(x), next(NULL) {}
 };
 
-ListNode *make_list(vector<int> &vector) {
+ListNode *make_list(const vector<int> &vector) {
     ListNode *rootNodePtr = nullptr;
     ListNode *lastNodePtr = nullptr;
 
@@ -62,7 +63,7 @@ struct TreeNode {
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-void make_tree_recursive(TreeNode *&rootNodePtr, int value) {
+void insert(TreeNode *&rootNodePtr, int value) {
     if (rootNodePtr == nullptr) {
         rootNodePtr = new TreeNode{value};
         return;
@@ -71,17 +72,33 @@ void make_tree_recursive(TreeNode *&rootNodePtr, int value) {
     if (rootNodePtr->val == value) {
         return;
     } else if (rootNodePtr->val > value) {
-        return make_tree_recursive(rootNodePtr->left, value);
+        return insert(rootNodePtr->left, value);
     } else {
-        return make_tree_recursive(rootNodePtr->right, value);
+        return insert(rootNodePtr->right, value);
     }
 }
 
-TreeNode *make_tree(vector<int> &vector) {
+int height(const TreeNode *&rootNodePtr) {
+    if (rootNodePtr == nullptr) return 0;
+    return 1 + std::max(height(const_cast<const TreeNode *&>(rootNodePtr->left)),
+                        height(const_cast<const TreeNode *&>(rootNodePtr->right)));
+}
+
+int height_balance(const TreeNode *&rootNodePtr) {
+    if (rootNodePtr == nullptr) return 0;
+    return height(const_cast<const TreeNode *&>(rootNodePtr->left)) -
+           height(const_cast<const TreeNode *&>(rootNodePtr->right));
+}
+
+void balance_tree(TreeNode *&rootNodePtr) {
+
+}
+
+TreeNode *make_tree(const vector<int> &vector) {
     TreeNode *rootNodePtr = nullptr;
 
     for (auto v : vector) {
-        make_tree_recursive(rootNodePtr, v);
+        insert(rootNodePtr, v);
     }
 
     return rootNodePtr;
@@ -98,20 +115,109 @@ std::string to_string(const TreeNode *&rootNodePtr) {
 
     return output;
 }
+
+void draw_tree(const TreeNode *&rootNodePtr) {
+    struct node_depth {
+        const TreeNode *n;
+        int lvl;
+
+        node_depth(const TreeNode *n_, int lvl_) : n(n_), lvl(lvl_) {}
+    };
+
+    int depth = height(rootNodePtr);
+
+    char buf[1024];
+    int last_lvl = 0;
+    int offset = (1 << depth) - 1;
+
+    // using a queue means we perform a breadth first iteration through the tree
+    std::list<node_depth> q;
+
+    q.push_back(node_depth(rootNodePtr, last_lvl));
+    while (q.size()) {
+        const node_depth &nd = *q.begin();
+
+        // moving to a new level in the tree, output a new line and calculate new offset
+        if (last_lvl != nd.lvl) {
+            std::cout << "\n";
+
+            last_lvl = nd.lvl;
+            offset = (1 << (depth - nd.lvl)) - 1;
+        }
+
+        // output <offset><data><offset>
+        if (nd.n)
+            sprintf(buf, " %*s%d%*s", offset, " ", nd.n->val, offset, " ");
+        else
+            sprintf(buf, " %*s%s%*s", offset, " ", "nil", offset, " ");
+        std::cout << buf;
+
+        if (nd.n) {
+            q.push_back(node_depth(nd.n->left, last_lvl + 1));
+            q.push_back(node_depth(nd.n->right, last_lvl + 1));
+        }
+
+        q.pop_front();
+    }
+    std::cout << "\n";
+}
 // TreeNode <<<
 
+const vector<int> fixture_vector = {0, 1, 2, 3};
+const vector<int> fixture_vector_reverse = {3, 2, 1, 0};
+
 TEST(ListNode, make_list) {
-    vector<int> vector = {0, 1, 2, 3};
-    const ListNode *rootNodePtr = make_list(vector);
+
+    const ListNode *rootNodePtr = make_list(fixture_vector);
 
     ASSERT_EQ("0, 1, 2, 3, ", to_string(rootNodePtr));
 }
 
-TEST(treeNode, make_tree) {
-    vector<int> vector = {0, 1, 2, 3};
-    const TreeNode *rootNodePtr = make_tree(vector);
+TEST(TreeNode, make_tree) {
+    const TreeNode *rootNodePtr = make_tree(fixture_vector);
 
     ASSERT_EQ("0, NULL, 1, NULL, 2, NULL, 3, NULL, NULL, ", to_string(rootNodePtr));
+}
+
+TEST(TreeNode, height) {
+    const TreeNode *rootNodePtr = make_tree(fixture_vector);
+
+    ASSERT_EQ(4, height(rootNodePtr));
+    ASSERT_EQ(3, height(const_cast<const TreeNode *&>(rootNodePtr->right)));
+    ASSERT_EQ(2, height(const_cast<const TreeNode *&>(rootNodePtr->right->right)));
+    ASSERT_EQ(1, height(const_cast<const TreeNode *&>(rootNodePtr->right->right->right)));
+    ASSERT_EQ(0, height(const_cast<const TreeNode *&>(rootNodePtr->right->right->right->right)));
+}
+
+TEST(TreeNode, height_balance) {
+    const TreeNode *rootNodePtr = make_tree(fixture_vector);
+
+    ASSERT_EQ(-3, height_balance(rootNodePtr));
+    ASSERT_EQ(-2, height_balance(const_cast<const TreeNode *&>(rootNodePtr->right)));
+    ASSERT_EQ(-1, height_balance(const_cast<const TreeNode *&>(rootNodePtr->right->right)));
+    ASSERT_EQ(0, height_balance(const_cast<const TreeNode *&>(rootNodePtr->right->right->right)));
+}
+
+TEST(TreeNode, height_balance_reverse) {
+    const TreeNode *rootNodePtr = make_tree(fixture_vector_reverse);
+
+    ASSERT_EQ(3, height_balance(rootNodePtr));
+    ASSERT_EQ(2, height_balance(const_cast<const TreeNode *&>(rootNodePtr->left)));
+    ASSERT_EQ(1, height_balance(const_cast<const TreeNode *&>(rootNodePtr->left->left)));
+    ASSERT_EQ(0, height_balance(const_cast<const TreeNode *&>(rootNodePtr->left->left->left)));
+}
+
+TEST(TreeNode, draw_full_tree) {
+    const vector<int> full_tree_vector = {10, 5, 50, 1, 6, 30, 60};
+    const TreeNode *rootNodePtr = make_tree(full_tree_vector);
+
+    draw_tree(rootNodePtr);
+}
+
+TEST(TreeNode, draw_ugly_tree) {
+    const TreeNode *rootNodePtr = make_tree(fixture_vector);
+
+    draw_tree(rootNodePtr);
 }
 
 TEST(search, binary_search_tree) {
