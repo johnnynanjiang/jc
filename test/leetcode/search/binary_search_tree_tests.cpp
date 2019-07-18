@@ -6,6 +6,8 @@
 
 #include <string>
 #include <list>
+#include <queue>
+#include <cmath>
 
 using namespace std;
 
@@ -78,7 +80,7 @@ void insert(TreeNode *&rootNodePtr, int value) {
     }
 }
 
-int height(const TreeNode *&rootNodePtr) {
+uint32_t height(const TreeNode *&rootNodePtr) {
     if (rootNodePtr == nullptr) return 0;
     return 1 + std::max(height(const_cast<const TreeNode *&>(rootNodePtr->left)),
                         height(const_cast<const TreeNode *&>(rootNodePtr->right)));
@@ -88,6 +90,10 @@ int height_balance(const TreeNode *&rootNodePtr) {
     if (rootNodePtr == nullptr) return 0;
     return height(const_cast<const TreeNode *&>(rootNodePtr->left)) -
            height(const_cast<const TreeNode *&>(rootNodePtr->right));
+}
+
+uint32_t max_capacity(uint32_t height) {
+    return std::pow(2, height) - 1;
 }
 
 void balance_tree(TreeNode *&rootNodePtr) {
@@ -116,50 +122,89 @@ std::string to_string(const TreeNode *&rootNodePtr) {
     return output;
 }
 
-void draw_tree(const TreeNode *&rootNodePtr) {
-    struct node_depth {
-        const TreeNode *n;
-        int lvl;
+std::string to_string(std::vector<const TreeNode *> nodeList) {
+    std::string output{};
 
-        node_depth(const TreeNode *n_, int lvl_) : n(n_), lvl(lvl_) {}
-    };
-
-    int depth = height(rootNodePtr);
-
-    char buf[1024];
-    int last_lvl = 0;
-    int offset = (1 << depth) - 1;
-
-    // using a queue means we perform a breadth first iteration through the tree
-    std::list<node_depth> q;
-
-    q.push_back(node_depth(rootNodePtr, last_lvl));
-    while (q.size()) {
-        const node_depth &nd = *q.begin();
-
-        // moving to a new level in the tree, output a new line and calculate new offset
-        if (last_lvl != nd.lvl) {
-            std::cout << "\n";
-
-            last_lvl = nd.lvl;
-            offset = (1 << (depth - nd.lvl)) - 1;
-        }
-
-        // output <offset><data><offset>
-        if (nd.n)
-            sprintf(buf, " %*s%d%*s", offset, " ", nd.n->val, offset, " ");
-        else
-            sprintf(buf, " %*s%s%*s", offset, " ", "nil", offset, " ");
-        std::cout << buf;
-
-        if (nd.n) {
-            q.push_back(node_depth(nd.n->left, last_lvl + 1));
-            q.push_back(node_depth(nd.n->right, last_lvl + 1));
-        }
-
-        q.pop_front();
+    for (auto node : nodeList) {
+        output += (node == nullptr ? "*" : to_string(node->val)) + ",";
     }
-    std::cout << "\n";
+
+    return output;
+}
+
+std::string to_string(const std::vector<std::vector<string>> &matrix) {
+    std::string output{};
+
+    for (auto row : matrix) {
+        std::string colString{};
+
+        for (auto col : row) {
+            colString += (col + ", ");
+        }
+
+        output += colString + '\n';
+    }
+
+    return output;
+}
+
+std::vector<const TreeNode *> to_list(const TreeNode *rootNodePtr) {
+    uint32_t treeHeight = height(rootNodePtr);
+    uint32_t maxCapacity = max_capacity(treeHeight - 1);
+    vector<const TreeNode *> nodeList;
+
+    nodeList.push_back(rootNodePtr);
+    uint32_t i = 0;
+
+    while (i < maxCapacity) {
+        const TreeNode *treeNode = nodeList[i];
+
+        if (nodeList[i] == nullptr) {
+            nodeList.push_back(nullptr);
+            nodeList.push_back(nullptr);
+        } else {
+            nodeList.push_back(treeNode->left);
+            nodeList.push_back(treeNode->right);
+        }
+
+        ++i;
+    }
+
+    return nodeList;
+}
+
+uint32_t width(uint32_t height) {
+    uint32_t i = 0;
+    uint32_t width = 0;
+
+    while (i <= height) {
+        width += std::pow(2, i);
+        ++i;
+    }
+
+    return width;
+}
+
+std::vector<std::vector<string>> draw_tree(const TreeNode *&rootNodePtr) {
+    uint32_t matrixHeight = height(rootNodePtr);
+    uint32_t matrixWidth = width(matrixHeight);
+    std::vector<const TreeNode *> nodeList = to_list(rootNodePtr);
+    std::vector<std::vector<string>> matrix(matrixHeight, std::vector<string>(matrixWidth, ""));
+
+    uint32_t startIndex = 0;
+    for (uint32_t i = 0; i < matrixHeight; ++i) {
+        uint32_t numberOfNodes = std::pow(2, i);
+        uint32_t startPosition = matrixWidth / (2 * numberOfNodes);
+
+        for (uint32_t j = 0; j < numberOfNodes; ++j) {
+            matrix[i][startPosition] = (nodeList[startIndex] == nullptr ?
+                                        "" : std::to_string(nodeList[startIndex]->val));
+            ++startIndex;
+            startPosition += 0;
+        }
+    }
+
+    return matrix;
 }
 // TreeNode <<<
 
@@ -179,7 +224,7 @@ TEST(TreeNode, make_tree) {
     ASSERT_EQ("0, NULL, 1, NULL, 2, NULL, 3, NULL, NULL, ", to_string(rootNodePtr));
 }
 
-TEST(TreeNode, height) {
+TEST(TreeNode, tree_height) {
     const TreeNode *rootNodePtr = make_tree(fixture_vector);
 
     ASSERT_EQ(4, height(rootNodePtr));
@@ -189,7 +234,7 @@ TEST(TreeNode, height) {
     ASSERT_EQ(0, height(const_cast<const TreeNode *&>(rootNodePtr->right->right->right->right)));
 }
 
-TEST(TreeNode, height_balance) {
+TEST(TreeNode, tree_height_balance) {
     const TreeNode *rootNodePtr = make_tree(fixture_vector);
 
     ASSERT_EQ(-3, height_balance(rootNodePtr));
@@ -198,7 +243,7 @@ TEST(TreeNode, height_balance) {
     ASSERT_EQ(0, height_balance(const_cast<const TreeNode *&>(rootNodePtr->right->right->right)));
 }
 
-TEST(TreeNode, height_balance_reverse) {
+TEST(TreeNode, tree_height_balance_reverse) {
     const TreeNode *rootNodePtr = make_tree(fixture_vector_reverse);
 
     ASSERT_EQ(3, height_balance(rootNodePtr));
@@ -207,11 +252,21 @@ TEST(TreeNode, height_balance_reverse) {
     ASSERT_EQ(0, height_balance(const_cast<const TreeNode *&>(rootNodePtr->left->left->left)));
 }
 
+TEST(TreeNode, tree_to_queue) {
+    const TreeNode *rootNodePtr = make_tree(fixture_vector);
+
+    vector<const TreeNode *> nodeList = to_list(rootNodePtr);
+
+    ASSERT_EQ("0,*,1,*,*,*,2,*,*,*,*,*,*,*,3,", to_string(nodeList));
+}
+
 TEST(TreeNode, draw_full_tree) {
     const vector<int> full_tree_vector = {10, 5, 50, 1, 6, 30, 60};
     const TreeNode *rootNodePtr = make_tree(full_tree_vector);
 
-    draw_tree(rootNodePtr);
+    auto matrix = draw_tree(rootNodePtr);
+
+    ASSERT_EQ("", to_string(matrix));
 }
 
 TEST(TreeNode, draw_ugly_tree) {
