@@ -25,6 +25,7 @@ add_executable(
         leetcode/median_of_two_sorted_arrays/solution_tests.cpp
         leetcode/search/search_tests.cpp
         leetcode/search/binary_search_tree_tests.cpp
+        leetcode/sorting/sorting_tests.cpp
 )
 
 target_link_libraries(
