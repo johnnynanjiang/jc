@@ -24,9 +24,7 @@ vector<int> &bubble_sort(vector<int> &v) {
     while (last > 1) {
         for (int i = 0; i < last - 1; ++i) {
             if (v[i] > v[i + 1]) {
-                int tmp = v[i];
-                v[i] = v[i + 1];
-                v[i + 1] = tmp;
+                std::swap(v[i], v[i + 1]);
             }
         }
 
