@@ -6,6 +6,11 @@ Suitable good first issue
 C++ Concurrency in Action
 https://legacy.gitbook.com/book/chenxiaowei/cpp_concurrency_in_action/details
 
+## Understanding Bitcoin source code
+
+* developer documents *****
+https://bitcoin.org/en/developer-documentation
+
 ## Source Code
 
 * Understand the code
@@ -41,5 +46,23 @@ src/test/test_bitcoin
 * Set up on MacOS
 https://github.com/bitcoin/bitcoin/blob/master/doc/build-osx.md
 
+* Set up Bitcoin with Eclipse on MacOS
+http://www.gubatron.com/blog/2014/02/09/setting-up-eclipse-as-your-ide-for-bitcoin-c-development-on-macosx/
+
+* Launch Eclipse with sudo to avoid permission issues
+sudo /Applications/Eclipse.app/Contents/MacOS/eclipse
+
 * Configure GDB for Eclipse on Mac OS Mojave
-https://stackoverflow.com/questions/52699661/macos-mojave-how-to-achieve-codesign-to-enable-debugging-gdb
+1. https://stackoverflow.com/questions/52699661/macos-mojave-how-to-achieve-codesign-to-enable-debugging-gdb
+2. https://stackoverflow.com/questions/37982876/mac-c-mars-eclipse-gdb-debug-hangs-at-launching-test-96
+
+* Eclipse stuck at `launching: configuring GDB (97%)` when running bitcoind in debug mode
+---
+Sign gdb
+Clean up Eclipse project and re-import
+Launch Eclipse with sudo
+
+## Community
+
+* Bitcoin Core Slack / M*P*clsno
+https://app.slack.com/client/T0J422BCZ/C0J42JBK9
