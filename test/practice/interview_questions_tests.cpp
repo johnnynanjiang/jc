@@ -367,3 +367,94 @@ TEST(interview_questions, rotateArray) {
     rotate(v, k);
     ASSERT_EQ("{2, 1}", vectorToString(v));
 }
+
+/*
+ * https://leetcode.com/interview/
+ * https://leetcode.com/submissions/detail/251774898/
+ * beats 14.39% other submissions
+ * could use bit operation instead of string for better performance
+ */
+
+bool isValid(uint32_t number) {
+    std::string numberAsString = std::to_string(number);
+
+    return numberAsString.find("3") == std::string::npos &&
+           numberAsString.find("4") == std::string::npos &&
+           numberAsString.find("7") == std::string::npos;
+}
+
+char rotate(char c) {
+    switch (c) {
+        case '0':
+            return '0';
+        case '1':
+            return '1';
+        case '2':
+            return '5';
+        case '5':
+            return '2';
+        case '6':
+            return '9';
+        case '8':
+            return '8';
+        case '9':
+            return '6';
+        default:
+            return ' ';
+    }
+}
+
+std::string rotateNumberToString(uint32_t number) {
+    std::string numberAsString = std::to_string(number);
+    std::string rotatedNumberAsString{};
+
+    for (auto c : numberAsString) {
+        char rotatedChar = rotate(c);
+        rotatedNumberAsString += rotatedChar;
+    }
+
+    return rotatedNumberAsString;
+}
+
+uint32_t rotateNumber(uint32_t number) {
+    return std::stoi(rotateNumberToString(number));
+}
+
+bool isGood(uint32_t number) {
+    if (isValid(number)) {
+        return number != rotateNumber(number);
+    }
+
+    return false;
+}
+
+uint32_t numberOfGood(uint32_t number) {
+    uint32_t count = 0;
+    for (uint32_t i = 1; i <= number; ++i) {
+        if (isGood(i)) ++count;
+    }
+
+    return count;
+}
+
+TEST(google_mock_interview, rotatedDigits) {
+    ASSERT_TRUE(isValid(1256890));
+    ASSERT_FALSE(isValid(123));
+    ASSERT_FALSE(isValid(124));
+    ASSERT_FALSE(isValid(127));
+
+    ASSERT_EQ("1529860", rotateNumberToString(1256890));
+    ASSERT_EQ("15 ", rotateNumberToString(123));
+    ASSERT_EQ("1 2", rotateNumberToString(135));
+
+    ASSERT_EQ(1529860, rotateNumber(1256890));
+    ASSERT_EQ(15, rotateNumber(123));
+    ASSERT_EQ(1, rotateNumber(135));
+
+    ASSERT_TRUE(isGood(1256890));
+    ASSERT_FALSE(isGood(01));
+    ASSERT_FALSE(isGood(10));
+    ASSERT_FALSE(isGood(123));
+
+    ASSERT_EQ(4, numberOfGood(10));
+}
